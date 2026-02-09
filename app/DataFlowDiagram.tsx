@@ -126,14 +126,14 @@ export default function DataFlowDiagram() {
   }, []);
 
   const sources = [
-    { id: 0, title: "CRM", icon: Users, color: "orange" },
-    { id: 1, title: "Product Analytics", icon: LineChart, color: "emerald" },
-    { id: 2, title: "Payment Processor", icon: CreditCard, color: "violet" },
-    { id: 3, title: "Internal DB", icon: Database, color: "blue" },
+    { id: 0, title: "CRM", icon: Users, color: "indigo" },
+    { id: 1, title: "Product Analytics", icon: LineChart, color: "indigo" },
+    { id: 2, title: "Payment Processor", icon: CreditCard, color: "indigo" },
+    { id: 3, title: "Internal DB", icon: Database, color: "indigo" },
   ];
 
   const destinations = [
-    { id: "ai", title: "AI Systems", icon: BrainCircuit, color: "fuchsia" },
+    { id: "ai", title: "AI Systems", icon: BrainCircuit, color: "indigo" },
     { id: "dash", title: "Dashboards", icon: BarChart3, color: "indigo" },
   ];
 
