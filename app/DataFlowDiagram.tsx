@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Database, 
-  LayoutDashboard, 
   BrainCircuit, 
   Server, 
   LineChart, 
@@ -15,12 +14,9 @@ import {
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-// --- Utility for cleaner classes ---
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-
-// --- Components ---
 
 const Card = ({ title, icon: Icon, color, isActive, onClick, isCenter = false, isDest = false }: any) => {
   return (
@@ -32,28 +28,29 @@ const Card = ({ title, icon: Icon, color, isActive, onClick, isCenter = false, i
         "relative z-20 flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border transition-all duration-300 w-32 h-32 md:w-40 md:h-40 backdrop-blur-xl",
         isActive 
           ? `bg-${color}-500/10 border-${color}-500/50 shadow-[0_0_30px_-5px_var(--tw-shadow-color)] shadow-${color}-500/30` 
-          : "bg-slate-800/40 border-slate-700 hover:border-slate-500 hover:bg-slate-800/60", // Made inactive state more visible
+          : "bg-slate-800/40 border-slate-700 hover:border-slate-500",
         isCenter && "w-48 h-48 md:w-56 md:h-56 border-indigo-500/30 bg-indigo-950/20",
         isDest && "aspect-square"
       )}
     >
       <div className={cn(
-        "p-3 rounded-xl transition-colors duration-300",
-        // Updated logic: Inactive icons are now slate-300 (lighter) instead of slate-400/dim
-        isActive ? `bg-${color}-500/20 text-${color}-400` : "bg-slate-700/50 text-slate-300", 
-        isCenter && "bg-indigo-600/20 text-indigo-300 p-5 rounded-2xl"
+        "p-3 rounded-xl transition-all duration-300 flex items-center justify-center",
+        // FIXED: Using opacity-40 and grayscale-0 to ensure logos are always visible, just slightly muted when inactive
+        isActive 
+          ? `bg-${color}-500/20 text-${color}-400 opacity-100 scale-110` 
+          : "bg-slate-700/50 text-slate-400 opacity-60 grayscale-0", 
+        isCenter && "bg-indigo-600/20 text-indigo-300 p-5 rounded-2xl opacity-100"
       )}>
-        <Icon className={cn("w-6 h-6", isCenter && "w-10 h-10")} />
+        <Icon className={cn("w-6 h-6 shrink-0", isCenter && "w-10 h-10")} strokeWidth={2.5} />
       </div>
       <span className={cn(
-        "font-bold text-sm tracking-tight",
-        isActive ? "text-white" : "text-slate-300", // Brighter inactive text
+        "font-bold text-sm tracking-tight transition-opacity duration-300",
+        isActive ? "text-white" : "text-slate-400 opacity-80",
         isCenter && "text-lg text-indigo-100"
       )}>
         {title}
       </span>
       
-      {/* Active Pulse Ring */}
       {isActive && (
         <motion.div
           layoutId="active-ring"
@@ -66,7 +63,6 @@ const Card = ({ title, icon: Icon, color, isActive, onClick, isCenter = false, i
 };
 
 const ConnectionLine = ({ active, color, verticalOffset = 0 }: { active: boolean, color: string, verticalOffset?: number }) => {
-    // Generate a unique ID for the gradient
     const gradientId = `gradient-${color}-${verticalOffset}`;
 
     return (
@@ -80,7 +76,6 @@ const ConnectionLine = ({ active, color, verticalOffset = 0 }: { active: boolean
             </linearGradient>
           </defs>
           
-          {/* Base Line (Dim) */}
           <path 
             d="M0,48 C100,48 100,48 200,48" 
             fill="none" 
@@ -90,10 +85,8 @@ const ConnectionLine = ({ active, color, verticalOffset = 0 }: { active: boolean
             vectorEffect="non-scaling-stroke"
           />
 
-          {/* Active Flowing Line */}
           {active && (
             <>
-              {/* The Glowing Path */}
               <motion.path
                 d="M0,48 C100,48 100,48 200,48"
                 fill="none"
@@ -105,7 +98,6 @@ const ConnectionLine = ({ active, color, verticalOffset = 0 }: { active: boolean
                 transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
               />
               
-              {/* The Particle Dot - Using standard SVG animateMotion */}
               <motion.circle
                 r="4"
                 fill="currentColor"
@@ -127,7 +119,6 @@ const ConnectionLine = ({ active, color, verticalOffset = 0 }: { active: boolean
 export default function DataFlowDiagram() {
   const [activeSource, setActiveSource] = useState<number | null>(null);
 
-  // Auto-cycle through sources if user isn't interacting
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveSource((prev) => (prev === null || prev === 3 ? 0 : prev + 1));
@@ -149,7 +140,6 @@ export default function DataFlowDiagram() {
 
   return (
     <div className="w-full py-20 bg-[#0f0518] relative overflow-hidden rounded-3xl border border-white/5">
-      {/* Background Grid Effect */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
       
       <div className="max-w-6xl mx-auto px-6 relative z-10">
@@ -165,8 +155,6 @@ export default function DataFlowDiagram() {
                   isActive={activeSource === index} 
                   onClick={() => setActiveSource(index)}
                 />
-                
-                {/* Connection Line: Left -> Center */}
                 <div className="hidden md:block absolute left-full top-1/2 w-24 lg:w-32 h-1 -translate-y-1/2 z-0">
                    <ConnectionLine 
                      active={activeSource === index} 
@@ -177,7 +165,7 @@ export default function DataFlowDiagram() {
             ))}
           </div>
 
-          {/* COLUMN 2: WAREHOUSE (Center) */}
+          {/* COLUMN 2: CORE (Center) */}
           <div className="relative flex flex-col items-center justify-center mx-12">
             <motion.div 
               animate={{ 
@@ -199,7 +187,6 @@ export default function DataFlowDiagram() {
               />
             </motion.div>
 
-            {/* Pulsing "Processing" Text */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -218,13 +205,9 @@ export default function DataFlowDiagram() {
           {/* COLUMN 3: DESTINATIONS (Right) */}
           <div className="flex flex-col gap-8 w-full md:w-auto relative">
              <h3 className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2 text-center md:text-right">Action Layer</h3>
-            {destinations.map((dest, i) => (
+            {destinations.map((dest) => (
               <div key={dest.id} className="relative flex items-center">
-                
-                {/* Connection Line: Center -> Right 
-                    Removed rotate-180 so flow goes Left->Right (out from center)
-                    Positioned 'right-full' to bridge the gap from center to this card
-                */}
+                {/* Flow goes out from center to the right */}
                 <div className="hidden md:block absolute right-full top-1/2 w-24 lg:w-32 h-1 -translate-y-1/2 z-0">
                    <ConnectionLine 
                      active={true} 
@@ -240,7 +223,6 @@ export default function DataFlowDiagram() {
               </div>
             ))}
           </div>
-
         </div>
       </div>
     </div>
