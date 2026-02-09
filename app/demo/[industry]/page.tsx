@@ -13,6 +13,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { icpData } from "../../data";
+import DataFlowDiagram from '../../DataFlowDiagram';
 
 export default function Page() {
     return (
@@ -157,6 +158,19 @@ function DashboardContent() {
             <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500 rounded-full blur-[120px] opacity-20 -translate-y-1/2 translate-x-1/2" />
           </div>
         </footer>
+
+        <section className="py-24 bg-slate-950">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">How It Works</h2>
+            <p className="text-slate-400 max-w-2xl mx-auto">
+              We unify your fragmented data stack into a single source of truth.
+            </p>
+          </div>
+          
+          <div className="px-4">
+            <DataFlowDiagram />
+          </div>
+      </section>
 
       </main>
     </div>
