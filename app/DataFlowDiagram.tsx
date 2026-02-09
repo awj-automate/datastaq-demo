@@ -175,7 +175,7 @@ export default function DataFlowDiagram() {
               transition={{ duration: 3, repeat: Infinity }}
             >
               <Card 
-                title="DataStaq Core" 
+                title="DataStaq Core Cool" 
                 icon={Server} 
                 color="indigo" 
                 isActive={true} 
