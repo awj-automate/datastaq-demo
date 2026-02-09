@@ -159,7 +159,7 @@ function DashboardContent() {
           </div>
         </footer>
 
-        <section className="py-24 bg-slate-950">          
+        <section className="py-20 bg-slate-950">          
           <div className="px-4">
             <DataFlowDiagram />
           </div>

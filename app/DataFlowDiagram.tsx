@@ -35,11 +35,10 @@ const Card = ({ title, icon: Icon, color, isActive, onClick, isCenter = false, i
     >
       <div className={cn(
         "p-3 rounded-xl transition-all duration-300 flex items-center justify-center",
-        // FIXED: Using opacity-40 and grayscale-0 to ensure logos are always visible, just slightly muted when inactive
         isActive 
-          ? `bg-${color}-500/20 text-${color}-400 opacity-100 scale-110` 
-          : "bg-slate-700/50 text-slate-400 opacity-60 grayscale-0", 
-        isCenter && "bg-indigo-600/20 text-indigo-300 p-5 rounded-2xl opacity-100"
+          ? `bg-${color}-500/20 text-${color}-400 scale-110` 
+          : "bg-slate-700/50 text-slate-400", 
+        isCenter && "bg-indigo-600/20 text-indigo-300 p-5 rounded-2xl"
       )}>
         <Icon className={cn("w-6 h-6 shrink-0", isCenter && "w-10 h-10")} strokeWidth={2.5} />
       </div>
@@ -139,7 +138,7 @@ export default function DataFlowDiagram() {
   ];
 
   return (
-    <div className="w-full py-20 bg-[#0f0518] relative overflow-hidden rounded-3xl border border-white/5">
+    <div className="w-full py-6 bg-[#0f0518] relative overflow-hidden rounded-3xl border border-white/5">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
       
       <div className="max-w-6xl mx-auto px-6 relative z-10">
