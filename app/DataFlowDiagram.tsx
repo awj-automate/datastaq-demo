@@ -1,16 +1,16 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   Database, 
   LayoutDashboard, 
   BrainCircuit, 
   Server, 
-  ShoppingCart, 
+  LineChart, 
   CreditCard, 
   Users, 
-  HardDrive 
+  BarChart3
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -19,28 +19,6 @@ import { twMerge } from 'tailwind-merge';
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-
-// --- Icons & Logos ---
-const HubSpotIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-[#FF7A59]">
-    <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8Z" opacity="0.2"/>
-    <path d="M15.5 10a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 15.5 10Zm-3.5-3a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 12 7Zm-3.5 3a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 8.5 10Zm3.5 4a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 12 14Z"/>
-  </svg>
-);
-
-const ShopifyIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-[#95BF47]">
-    <path d="M3.5 7.5l2-3L21 2l-1 18-9 4-8.5-3.5L3.5 7.5z" opacity="0.2"/>
-    <path d="M12 16.5l-4-2V9l4 2 4-2v5.5l-4 2z"/>
-  </svg>
-);
-
-const StripeIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-[#635BFF]">
-    <path d="M2 4h20v16H2z" opacity="0" />
-    <path d="M13.9 11.5a2.5 2.5 0 0 0-2.2-1.3c-1.3 0-2 .6-2 1.6 0 .8.6 1.3 2.1 1.7 2.4.6 3.3 1.5 3.3 3.3 0 1.9-1.6 3.2-4.1 3.2-2 0-3.6-.8-4-2.5l2.2-.5c.2.9 1 1.4 1.9 1.4 1.2 0 1.9-.6 1.9-1.6 0-.9-.7-1.4-2.2-1.8-2.4-.6-3.2-1.6-3.2-3.2 0-1.8 1.5-3.1 3.8-3.1 1.9 0 3.2.7 3.6 2.3l-2.1.5z"/>
-  </svg>
-);
 
 // --- Components ---
 
@@ -54,21 +32,22 @@ const Card = ({ title, icon: Icon, color, isActive, onClick, isCenter = false, i
         "relative z-20 flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border transition-all duration-300 w-32 h-32 md:w-40 md:h-40 backdrop-blur-xl",
         isActive 
           ? `bg-${color}-500/10 border-${color}-500/50 shadow-[0_0_30px_-5px_var(--tw-shadow-color)] shadow-${color}-500/30` 
-          : "bg-slate-900/40 border-slate-700/50 hover:border-slate-500",
+          : "bg-slate-800/40 border-slate-700 hover:border-slate-500 hover:bg-slate-800/60", // Made inactive state more visible
         isCenter && "w-48 h-48 md:w-56 md:h-56 border-indigo-500/30 bg-indigo-950/20",
-        isDest && "rounded-full aspect-square"
+        isDest && "aspect-square"
       )}
     >
       <div className={cn(
         "p-3 rounded-xl transition-colors duration-300",
-        isActive ? `bg-${color}-500/20 text-${color}-400` : "bg-slate-800 text-slate-400",
+        // Updated logic: Inactive icons are now slate-300 (lighter) instead of slate-400/dim
+        isActive ? `bg-${color}-500/20 text-${color}-400` : "bg-slate-700/50 text-slate-300", 
         isCenter && "bg-indigo-600/20 text-indigo-300 p-5 rounded-2xl"
       )}>
         <Icon className={cn("w-6 h-6", isCenter && "w-10 h-10")} />
       </div>
       <span className={cn(
         "font-bold text-sm tracking-tight",
-        isActive ? "text-white" : "text-slate-400",
+        isActive ? "text-white" : "text-slate-300", // Brighter inactive text
         isCenter && "text-lg text-indigo-100"
       )}>
         {title}
@@ -87,7 +66,7 @@ const Card = ({ title, icon: Icon, color, isActive, onClick, isCenter = false, i
 };
 
 const ConnectionLine = ({ active, color, verticalOffset = 0 }: { active: boolean, color: string, verticalOffset?: number }) => {
-    // Generate a unique ID for the gradient to avoid conflicts
+    // Generate a unique ID for the gradient
     const gradientId = `gradient-${color}-${verticalOffset}`;
 
     return (
@@ -126,15 +105,12 @@ const ConnectionLine = ({ active, color, verticalOffset = 0 }: { active: boolean
                 transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
               />
               
-              {/* The Particle Dot */}
+              {/* The Particle Dot - Using standard SVG animateMotion */}
               <motion.circle
                 r="4"
                 fill="currentColor"
                 className={cn(`text-${color}-400 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]`)}
               >
-                {/* FIX: Use standard SVG <animateMotion> instead of <motion.animateMotion> 
-                   We also changed 'repeat' to 'repeatCount="indefinite"' for standard SVG compatibility.
-                */}
                 <animateMotion
                   dur="1.5s"
                   repeatCount="indefinite"
@@ -160,15 +136,15 @@ export default function DataFlowDiagram() {
   }, []);
 
   const sources = [
-    { id: 0, title: "HubSpot", icon: Users, color: "orange" }, // Using standard tailwind colors for simplicity in demo
-    { id: 1, title: "Shopify", icon: ShoppingCart, color: "emerald" },
-    { id: 2, title: "Stripe", icon: CreditCard, color: "violet" },
+    { id: 0, title: "CRM", icon: Users, color: "orange" },
+    { id: 1, title: "Product Analytics", icon: LineChart, color: "emerald" },
+    { id: 2, title: "Payment Processor", icon: CreditCard, color: "violet" },
     { id: 3, title: "Internal DB", icon: Database, color: "blue" },
   ];
 
   const destinations = [
-    { id: "ai", title: "AI Models", icon: BrainCircuit, color: "fuchsia" },
-    { id: "dash", title: "Dashboard", icon: LayoutDashboard, color: "indigo" },
+    { id: "ai", title: "AI Systems", icon: BrainCircuit, color: "fuchsia" },
+    { id: "dash", title: "Dashboards", icon: BarChart3, color: "indigo" },
   ];
 
   return (
@@ -179,7 +155,7 @@ export default function DataFlowDiagram() {
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-0">
           
-          {/* COLUMN 1: SOURCES */}
+          {/* COLUMN 1: SOURCES (Left) */}
           <div className="flex flex-col gap-6 w-full md:w-auto">
             <h3 className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2 text-center md:text-left">Data Sources</h3>
             {sources.map((source, index) => (
@@ -190,9 +166,8 @@ export default function DataFlowDiagram() {
                   onClick={() => setActiveSource(index)}
                 />
                 
-                {/* Horizontal Connection Line (Desktop) */}
+                {/* Connection Line: Left -> Center */}
                 <div className="hidden md:block absolute left-full top-1/2 w-24 lg:w-32 h-1 -translate-y-1/2 z-0">
-                   {/* We pass a custom offset calculation to make lines converge */}
                    <ConnectionLine 
                      active={activeSource === index} 
                      color={source.color} 
@@ -202,11 +177,8 @@ export default function DataFlowDiagram() {
             ))}
           </div>
 
-          {/* COLUMN 2: WAREHOUSE (CENTER) */}
+          {/* COLUMN 2: WAREHOUSE (Center) */}
           <div className="relative flex flex-col items-center justify-center mx-12">
-             {/* Converging Lines Visual Fix: Use a large SVG behind everything to draw lines from Left -> Center */}
-             {/* For this specific simplified component, we rely on the horizontal spacers, but in a full app we'd use absolute SVG paths */}
-            
             <motion.div 
               animate={{ 
                 scale: [1, 1.02, 1],
@@ -231,25 +203,29 @@ export default function DataFlowDiagram() {
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="absolute -bottom-12 text-center"
+              className="absolute -bottom-12 text-center w-full whitespace-nowrap"
             >
-              <div className="flex items-center gap-2 text-indigo-400 text-xs font-mono">
+              <div className="flex items-center justify-center gap-2 text-indigo-400 text-xs font-mono">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
                 </span>
-                Processing {sources[activeSource || 0].title} Stream...
+                Syncing {sources[activeSource || 0].title} Stream...
               </div>
             </motion.div>
           </div>
 
-          {/* COLUMN 3: DESTINATIONS */}
+          {/* COLUMN 3: DESTINATIONS (Right) */}
           <div className="flex flex-col gap-8 w-full md:w-auto relative">
              <h3 className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2 text-center md:text-right">Action Layer</h3>
             {destinations.map((dest, i) => (
               <div key={dest.id} className="relative flex items-center">
-                {/* Connection Lines from Center -> Right */}
-                <div className="hidden md:block absolute right-full top-1/2 w-24 lg:w-32 h-1 -translate-y-1/2 z-0 rotate-180">
+                
+                {/* Connection Line: Center -> Right 
+                    Removed rotate-180 so flow goes Left->Right (out from center)
+                    Positioned 'right-full' to bridge the gap from center to this card
+                */}
+                <div className="hidden md:block absolute right-full top-1/2 w-24 lg:w-32 h-1 -translate-y-1/2 z-0">
                    <ConnectionLine 
                      active={true} 
                      color={dest.color} 
