@@ -159,14 +159,7 @@ function DashboardContent() {
           </div>
         </footer>
 
-        <section className="py-24 bg-slate-950">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">How It Works</h2>
-            <p className="text-slate-400 max-w-2xl mx-auto">
-              We unify your fragmented data stack into a single source of truth.
-            </p>
-          </div>
-          
+        <section className="py-24 bg-slate-950">          
           <div className="px-4">
             <DataFlowDiagram />
           </div>
