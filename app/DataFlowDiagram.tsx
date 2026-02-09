@@ -138,7 +138,7 @@ export default function DataFlowDiagram() {
   ];
 
   return (
-    <div className="w-full py-6 bg-[#0f0518] relative overflow-hidden rounded-3xl border border-white/5">
+    <div className="w-full h-full bg-[#0f0518] relative overflow-hidden rounded-3xl border border-white/5">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
       
       <div className="max-w-6xl mx-auto px-6 relative z-10">
