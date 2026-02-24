@@ -69,6 +69,23 @@ export const icpData: any = {
       { name: "Q4", New: 60000, Expansion: 12000, Churn: -1800 },
     ]
   },
+  "logistics": {
+    title: "Logistics Command Center",
+    painPoint: "Real-Time Fleet & Delivery Visibility",
+    integrations: ["Samsara", "SAP TM", "FedEx API"],
+    kpis: [
+      { title: "On-Time Delivery", metric: "94.8%", delta: "+1.8%", deltaType: "increase", subtext: "Last 30 days" },
+      { title: "Cost Per Shipment", metric: "$37.60", delta: "-$2.10", deltaType: "increase", subtext: "vs. last month" },
+      { title: "Fleet Utilization", metric: "88%", delta: "+3%", deltaType: "increase", subtext: "Active vehicles" },
+    ],
+    chartTitle: "On-Time Delivery Rate (Daily)",
+    chartData: [
+      { name: "Week 1", Deliveries: 2100, OnTime: 91 },
+      { name: "Week 2", Deliveries: 2280, OnTime: 92 },
+      { name: "Week 3", Deliveries: 2190, OnTime: 94 },
+      { name: "Week 4", Deliveries: 2340, OnTime: 95 },
+    ]
+  },
   "pe-portfolio": {
     title: "Portfolio EBITDA Monitor",
     painPoint: "Standardized Reporting Across Portcos",
