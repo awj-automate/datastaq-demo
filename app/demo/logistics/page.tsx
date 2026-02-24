@@ -514,7 +514,7 @@ function LogisticsDashboard() {
               <div className="max-w-xl space-y-4">
                 <h4 className="text-3xl font-bold text-white">Scale your logistics operations.</h4>
                 <p className="text-purple-200 text-lg font-medium italic opacity-90 leading-relaxed">
-                  "DataStaq connects Samsara, your TMS, and carrier APIs into one live ops center — no spreadsheets, no manual stitching."
+                  "DataStaq connects your TMS, billing system and carrier APIs into one live ops center. No spreadsheets, no manual stitching, just clean, accurate data."
                 </p>
               </div>
               <button className="group flex items-center gap-3 bg-white text-purple-950 px-8 py-4 rounded-2xl font-black shadow-2xl hover:bg-purple-50 transition-all hover:scale-105">
